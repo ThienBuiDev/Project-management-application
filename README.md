@@ -14,7 +14,10 @@ $ npm install
 $ npm start
 ```
 
+
 ### 
 Author: David Bui
+
 Github: https://github.com/David-VNdev/
+
 LinkedIn: https://www.linkedin.com/in/david-bui-vn/
