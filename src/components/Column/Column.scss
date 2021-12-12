@@ -1,0 +1,62 @@
+@import '_setting.scss';
+$column-header-height: 36px;
+$column-footer-height: 36px;
+
+.column {
+	flex: 0 0 auto;
+	width: 300px;
+	height: calc(100% - #{$gap});
+	&:not(:first-child) {
+		margin-left: $gap;
+	}
+
+	background-color: #ebecf0;
+	border-radius: $scollbar-border-radius;
+	> * {
+		color: #333;
+		padding: 0 8px;
+	}
+
+	header {
+		padding-left: 15px;
+		height: $column-header-height;
+		line-height: $column-header-height;
+		font-size: 18px;
+		font-weight: bold;
+		border-top-left-radius: $column-border-radius;
+		border-top-right-radius: $column-border-radius;
+	}
+
+	footer {
+		padding-left: 10px;
+		height: $column-footer-height;
+		line-height: $column-footer-height;
+		font-size: 16px;
+		border-bottom-left-radius: $column-border-radius;
+		border-bottom-right-radius: $column-border-radius;
+	}
+
+	ul.task-list {
+		padding-right: 4px;
+		list-style-type: none;
+		margin-left: 4px;
+		margin-right: 4px;
+		max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - #{$gap});
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			-webkit-appearance: none;
+			border-radius: $scollbar-border-radius;
+			background-color: #ddd;
+		}
+		&::-webkit-scrollbar:vertical {
+			width: 6px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: #ccc;
+			border-radius: $scollbar-border-radius;
+		}
+
+		
+	}
+}
