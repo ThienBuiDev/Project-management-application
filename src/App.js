@@ -1,5 +1,5 @@
 import './App.scss'
-import Appbar from './components/AppBar/AppBar'
+import Appbar from 'components/AppBar/AppBar.js'
 function App() {
 	return (
 		<div className="App">
