@@ -1,9 +1,9 @@
 import './App.scss'
-
+import Appbar from './components/AppBar/AppBar'
 function App() {
 	return (
 		<div className="App">
-			<nav className="navbar app">App Bar</nav>
+			<Appbar />
 			<nav className="navbar board">Board Bar</nav>
 			<div className="board-columns">
 				<div className="column">
