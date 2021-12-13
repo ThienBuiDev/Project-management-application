@@ -1,19 +1,16 @@
 import React from 'react'
 import './Column.scss'
 import Card from 'components/Card/Card'
-function Column() {
+function Column({ column }) {
+	const cards = column.cards.sort((a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id))
 	return (
 		<div className='column'>
-			<header>Brainstorm</header>
+			<header>{column.title}</header>
+
 			<ul className='card-list'>
-                <Card />
-				<li className='card-item'>
-					Add what you like to work on below. Add what you like to work on below
-				</li>
-				<li className='card-item'>Add what you like to work on below</li>
-				<li className='card-item'>Add what you like to work on below</li>
-				<li className='card-item'>Add what you like to work on below</li>
-				<li className='card-item'>Add what you like to work on below</li>
+				{cards.map((card,index) => (
+					<Card key={index} card={card} />
+				))}
 			</ul>
 			<footer>Add another card</footer>
 		</div>
