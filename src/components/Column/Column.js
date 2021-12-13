@@ -1,19 +1,16 @@
 import React from 'react'
 import './Column.scss'
-import Task from 'components/Task/Task'
-function Column() {
+import Card from 'components/Card/Card'
+function Column({ column }) {
+	const cards = column.cards.sort((a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id))
 	return (
 		<div className='column'>
-			<header>Brainstorm</header>
-			<ul className='task-list'>
-                <Task />
-				<li className='task-item'>
-					Add what you like to work on below. Add what you like to work on below
-				</li>
-				<li className='task-item'>Add what you like to work on below</li>
-				<li className='task-item'>Add what you like to work on below</li>
-				<li className='task-item'>Add what you like to work on below</li>
-				<li className='task-item'>Add what you like to work on below</li>
+			<header>{column.title}</header>
+
+			<ul className='card-list'>
+				{cards.map((card,index) => (
+					<Card key={index} card={card} />
+				))}
 			</ul>
 			<footer>Add another card</footer>
 		</div>
