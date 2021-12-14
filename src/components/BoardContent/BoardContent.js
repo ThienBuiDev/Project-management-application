@@ -36,12 +36,12 @@ function BoardContent() {
 			<Container
 				orientation='horizontal'
 				onDrop={onColumnDrop}
-				getChildPayload = {index=>columns[index]}
+				getChildPayload={(index) => columns[index]}
 				dragHandleSelector='.column-drag-handle'
 				dropPlaceholder={{
 					animationDuration: 150,
 					showOnTop: true,
-					className: 'column-drop-preview'
+					className: 'column-drop-preview',
 				}}>
 				{columns.map((column, index) => (
 					<Draggable key={index}>

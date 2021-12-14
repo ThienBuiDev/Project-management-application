@@ -8,7 +8,9 @@ function Column({ column }) {
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
 	)
 
-	const onCardDrop = () => {}
+	const onCardDrop = (dropResult) => {
+		console.log(dropResult)
+	}
 	return (
 		<div className='column'>
 			<header className='column-drag-handle'>{column.title}</header>
