@@ -5,7 +5,7 @@ function Card(props) {
 	const card = props.card
 
 	return (
-		<li className='card-item'>
+		<div className='card-item'>
 			{card.cover && (
 				<img
 					className='card-cover'
@@ -15,7 +15,7 @@ function Card(props) {
 			)}
 
 			{card.title}
-		</li>
+		</div>
 	)
 }
 

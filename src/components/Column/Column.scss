@@ -17,7 +17,7 @@ $column-footer-height: 36px;
 		padding: 0 8px;
 	}
 
-	header {
+	header.column-drag-handle {
 		padding-left: 15px;
 		height: $column-header-height;
 		line-height: $column-header-height;
@@ -25,6 +25,7 @@ $column-footer-height: 36px;
 		font-weight: bold;
 		border-top-left-radius: $column-border-radius;
 		border-top-right-radius: $column-border-radius;
+		cursor: pointer;
 	}
 
 	footer {
@@ -36,9 +37,8 @@ $column-footer-height: 36px;
 		border-bottom-right-radius: $column-border-radius;
 	}
 
-	ul.card-list {
+	.card-list {
 		padding-right: 4px;
-		list-style-type: none;
 		margin-left: 4px;
 		margin-right: 4px;
 		max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - #{$gap});
@@ -57,6 +57,20 @@ $column-footer-height: 36px;
 			border-radius: $scollbar-border-radius;
 		}
 
-		
+		.card-ghost {
+			transition: transform 0.18s ease;
+			transform: rotateZ(5deg);
+		}
+
+		.card-ghost-drop {
+			transition: transform 0.18s ease-in-out;
+			transform: rotateZ(0deg);
+		}
+
+		.card-drop-preview {
+			background-color: rgba(150, 150, 200, 0.1);
+			border: 1px dashed #abc;
+			margin: 5px;
+		}
 	}
 }

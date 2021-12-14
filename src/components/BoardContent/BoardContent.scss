@@ -1,8 +1,5 @@
 @import '_setting.scss';
 
-
-
-
 $list-bg-color: #ebecf0;
 .board-content {
 	display: flex;
@@ -20,6 +17,9 @@ $list-bg-color: #ebecf0;
 		background-color: rgba(255, 255, 255, 0.5);
 		border-radius: $column-border-radius;
 	}
-
-
+	.column-drop-preview {
+		background-color: rgba(150, 150, 200, 0.1);
+		border: 1px dashed #abc;
+		margin: 5px 45px 5px 5px;
+	}
 }
