@@ -30,9 +30,12 @@ function BoardContent() {
 	}
 
 	const onColumnDrop = (dropResult) => {
-		let newBoard = [...columns]
-		newBoard = applyDrag(newBoard, dropResult)
-		setColumns(newBoard)
+		let newColumns = [...columns]
+		newColumns = applyDrag(newColumns, dropResult)
+		console.log(newColumns)
+		setColumns(newColumns)
+		setBoard({ ...board, columns: newColumns ,columnOrder: newColumns.map(column => column.id)})
+
 	}
 	return (
 		<div className='board-content'>
