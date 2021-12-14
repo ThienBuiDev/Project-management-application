@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { isEmpty } from 'lodash'
+import { applyDrag } from 'utils'
 import './BoardContent.scss'
 import Column from 'components/Column/Column'
 
@@ -29,7 +30,9 @@ function BoardContent() {
 	}
 
 	const onColumnDrop = (dropResult) => {
-		console.log(dropResult)
+		let newBoard = [...columns]
+		newBoard = applyDrag(newBoard, dropResult)
+		setColumns(newBoard)
 	}
 	return (
 		<div className='board-content'>
