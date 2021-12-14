@@ -1,19 +1,25 @@
 @import '_setting.scss';
 $card-border-radius: 4px;
 
-li.card-item {
+.card-item {
 	background-color: #fff;
 	padding: $gap;
 	border-radius: $card-border-radius;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-	&:not(:last-child) {
-		margin-bottom: 10px;
-	}
+	cursor: pointer;
+	margin-bottom: 10px;
 	img.card-cover {
+		user-drag: none;
+		-webkit-user-drag: none;
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
 		display: block;
 		max-width: calc(100% + 2 *#{$gap});
 		margin-left: -$gap;
 		margin-top: -$gap;
+		margin-bottom: $gap;
 		border-top-left-radius: $card-border-radius;
 		border-top-right-radius: $card-border-radius;
 	}

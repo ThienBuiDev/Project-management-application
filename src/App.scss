@@ -16,7 +16,7 @@ body {
 .App {
 	height: 100vh;
 	display: grid;
-	grid-template-rows: 40px 50px 1fr;
+	grid-template-rows: $navbar-app-height $navbar-board-height $board-content-height;
 	background-color: $board-bg-color;
 
 
