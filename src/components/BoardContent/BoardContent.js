@@ -54,7 +54,7 @@ function BoardContent() {
 	}
 	return (
 		<div className='board-content'>
-			<Container
+			<Container className='board-content-container'
 				orientation='horizontal'
 				onDrop={onColumnDrop}
 				getChildPayload={(index) => columns[index]}
@@ -70,6 +70,10 @@ function BoardContent() {
 					</Draggable>
 				))}
 			</Container>
+			<div className='add-new-column'>
+				<i className='fa fa-plus icon' />
+				Add another column
+			</div>
 		</div>
 	)
 }

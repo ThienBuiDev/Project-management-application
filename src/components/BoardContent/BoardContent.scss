@@ -1,6 +1,6 @@
 @import '_setting.scss';
 
-$list-bg-color: #ebecf0;
+$list-bg-color: #ebf0ee;
 .board-content {
 	display: flex;
 	overflow-x: auto;
@@ -17,9 +17,27 @@ $list-bg-color: #ebecf0;
 		background-color: rgba(255, 255, 255, 0.5);
 		border-radius: $column-border-radius;
 	}
-	.column-drop-preview {
-		background-color: rgba(150, 150, 200, 0.1);
-		border: 1px dashed #abc;
-		margin: 5px 45px 5px 5px;
+
+	.board-content-container {
+		.column-drop-preview {
+			background-color: rgba(150, 150, 200, 0.1);
+			border: 1px dashed #abc;
+			margin: 5px 45px 5px 5px;
+		}
+	}
+
+	.add-new-column {
+		min-width: 300px;
+		height: 36px;
+		line-height: 36px;
+		padding: 0 8px;
+		background-color: hsla(0, 0, 100%, 0.24);
+		border-radius:$column-border-radius;
+		margin-left: $gap;
+		cursor: pointer;
+		&:hover{
+		background-color: hsla(0, 0, 100%, .34);
+			
+		}
 	}
 }

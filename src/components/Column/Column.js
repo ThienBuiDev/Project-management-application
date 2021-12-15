@@ -3,11 +3,10 @@ import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
 
 import Card from 'components/Card/Card'
-function Column({ column ,onCardDrop}) {
+function Column({ column, onCardDrop }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
 	)
-
 
 	return (
 		<div className='column'>
@@ -44,7 +43,12 @@ function Column({ column ,onCardDrop}) {
 					))}
 				</Container>
 			</div>
-			<footer>Add another card</footer>
+			<footer>
+				<div className='footer-container'>
+					<i className='fa fa-plus icon' />
+					Add another card
+				</div>
+			</footer>
 		</div>
 	)
 }

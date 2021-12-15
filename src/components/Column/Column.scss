@@ -4,7 +4,7 @@ $column-footer-height: 36px;
 $column-height: calc(#{$board-content-height} - #{$gap * 3});
 
 .column {
-	flex: 0 0 auto;
+	// flex: 0 0 auto;
 	width: 300px;
 	height: $column-height;
 	margin-left: $gap;
@@ -33,6 +33,14 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 		font-size: 16px;
 		border-bottom-left-radius: $column-border-radius;
 		border-bottom-right-radius: $column-border-radius;
+		color: #888;
+		.footer-container{
+			margin-left: 10px;
+			cursor: pointer;
+			&:hover{
+				color: #333;
+			}
+		}
 	}
 
 	.card-list {
