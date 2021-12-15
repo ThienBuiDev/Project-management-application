@@ -3,14 +3,11 @@ import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
 
 import Card from 'components/Card/Card'
-function Column({ column }) {
+function Column({ column, onCardDrop }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
 	)
 
-	const onCardDrop = (dropResult) => {
-		console.log(dropResult)
-	}
 	return (
 		<div className='column'>
 			<header className='column-drag-handle'>{column.title}</header>
@@ -21,7 +18,7 @@ function Column({ column }) {
 					groupName='thienbui-column'
 					// onDragStart={(e) => console.log('drag started', e)}
 					// onDragEnd={(e) => console.log('drag end', e)}
-					onDrop={onCardDrop}
+					onDrop={(dropResult) => onCardDrop(column.id, dropResult)}
 					getChildPayload={(index) => cards[index]}
 					dragClass='card-ghost'
 					dropClass='card-ghost-drop'
@@ -46,7 +43,12 @@ function Column({ column }) {
 					))}
 				</Container>
 			</div>
-			<footer>Add another card</footer>
+			<footer>
+				<div className='footer-container'>
+					<i className='fa fa-plus icon' />
+					Add another card
+				</div>
+			</footer>
 		</div>
 	)
 }
