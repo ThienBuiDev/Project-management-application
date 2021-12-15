@@ -27,17 +27,43 @@ $list-bg-color: #ebf0ee;
 	}
 
 	.add-new-column {
-		min-width: 300px;
-		height: 36px;
+		max-width: 250px;
+		min-width: 250px;
 		line-height: 36px;
-		padding: 0 8px;
+		padding: 4px 0 4px 15px;
 		background-color: hsla(0, 0, 100%, 0.24);
-		border-radius:$column-border-radius;
+		border-radius: $column-border-radius;
 		margin-left: $gap;
 		cursor: pointer;
-		&:hover{
-		background-color: hsla(0, 0, 100%, .34);
-			
+		&:hover {
+			background-color: hsla(0, 0, 100%, 0.34);
+		}
+	}
+
+	.enter-new-column {
+		max-width: 250px;
+		min-width: 250px;
+		background-color: $column-background-color;
+		line-height: 36px;
+		padding: 4px 10px;
+		margin-left: $gap;
+		border-radius: $column-border-radius;
+
+		input.enter-new-column-input {
+			margin: 5px 0;
+		}
+
+		span.cancel-new-column {
+			display: inline-block;
+			float: right;
+			font-size: 18px;
+			color: $alert-color;
+			max-width: 100%;
+			text-align: center;
+			cursor: pointer;
+			&:hover {
+				color: darken($color: $alert-color, $amount: 10);
+			}
 		}
 	}
 }

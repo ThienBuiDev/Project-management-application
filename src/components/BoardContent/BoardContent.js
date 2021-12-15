@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
+import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap'
 import { isEmpty } from 'lodash'
 import { applyDrag } from 'utils'
 import './BoardContent.scss'
@@ -9,6 +10,7 @@ import { initialData } from 'actions/initialData'
 function BoardContent() {
 	const [board, setBoard] = useState({})
 	const [columns, setColumns] = useState([])
+	const [showNewColumnForm, setShowNewColumnForm] = useState(false)
 
 	useEffect(() => {
 		const boardFromDB = initialData.boards.find((board) => board.id === 'board-1')
@@ -52,9 +54,14 @@ function BoardContent() {
 		currentColumn.cardOrder = currentColumn.cards.map((card) => card.id)
 		setColumns(newColumns)
 	}
+
+	const toggleNewColumnForm = () => {
+		setShowNewColumnForm(!showNewColumnForm)
+	}
 	return (
 		<div className='board-content'>
-			<Container className='board-content-container'
+			<Container
+				className='board-content-container'
 				orientation='horizontal'
 				onDrop={onColumnDrop}
 				getChildPayload={(index) => columns[index]}
@@ -70,10 +77,34 @@ function BoardContent() {
 					</Draggable>
 				))}
 			</Container>
-			<div className='add-new-column'>
-				<i className='fa fa-plus icon' />
-				Add another column
-			</div>
+
+			<BootstrapContainer className='adjusted-bootstrap-container'>
+				{!showNewColumnForm ? (
+					<Row>
+						<Col className='add-new-column' onClick={toggleNewColumnForm}>
+							<i className='fa fa-plus icon' />
+							Add another column
+						</Col>
+					</Row>
+				) : (
+					<Row>
+						<Col className='enter-new-column'>
+							<Form.Control
+								size='sm'
+								type='text'
+								placeholder='Enter column title'
+								className='enter-new-column-input'
+							/>
+							<Button variant='success' size='sm'>
+								Add column
+							</Button>
+							<span className='cancel-new-column' onClick={toggleNewColumnForm}>
+								<i className='fa fa-times'></i>
+							</span>
+						</Col>
+					</Row>
+				)}
+			</BootstrapContainer>
 		</div>
 	)
 }
