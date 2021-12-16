@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap'
 import { isEmpty } from 'lodash'
@@ -11,7 +11,9 @@ function BoardContent() {
 	const [board, setBoard] = useState({})
 	const [columns, setColumns] = useState([])
 	const [showNewColumnForm, setShowNewColumnForm] = useState(false)
+	const [newColumnTitle, setNewColumnTitle] = useState('')
 
+	const newColumnTitleRef = useRef(null)
 	useEffect(() => {
 		const boardFromDB = initialData.boards.find((board) => board.id === 'board-1')
 		boardFromDB.columns.sort(
@@ -22,6 +24,9 @@ function BoardContent() {
 			setColumns(boardFromDB.columns)
 		}
 	}, [])
+	useEffect(() => {
+		newColumnTitleRef && newColumnTitleRef.current && newColumnTitleRef.current.focus()
+	}, [showNewColumnForm])
 
 	if (isEmpty(board)) {
 		return (
@@ -57,6 +62,36 @@ function BoardContent() {
 
 	const toggleNewColumnForm = () => {
 		setShowNewColumnForm(!showNewColumnForm)
+		setNewColumnTitle('')
+	}
+
+	const addNewColumSubmit = () => {
+		if (newColumnTitle.trim() == '') {
+			alert('Please enter column title')
+			newColumnTitleRef && newColumnTitleRef.current && newColumnTitleRef.current.focus()
+			setNewColumnTitle('')
+			return
+		} else {
+			const newColumn = {
+				id: `column-${Date.now()}`,
+				title: newColumnTitle,
+				cards: [],
+				cardOrder: [],
+			}
+			setColumns([...columns, newColumn])
+			setBoard({
+				...board,
+				columns: [...columns, newColumn],
+				columnOrder: [...board.columnOrder, newColumn.id],
+			})
+			setNewColumnTitle('')
+			setShowNewColumnForm(false)
+		}
+
+		newColumnTitleRef.current.focus()
+	}
+	const onNewColumnTitleChange = (e) => {
+		setNewColumnTitle(e.target.value)
 	}
 	return (
 		<div className='board-content'>
@@ -94,8 +129,12 @@ function BoardContent() {
 								type='text'
 								placeholder='Enter column title'
 								className='enter-new-column-input'
+								value={newColumnTitle}
+								ref={newColumnTitleRef}
+								onChange={onNewColumnTitleChange}
+								onEnter={addNewColumSubmit}
 							/>
-							<Button variant='success' size='sm'>
+							<Button variant='success' size='sm' onClick={addNewColumSubmit}>
 								Add column
 							</Button>
 							<span className='cancel-new-column' onClick={toggleNewColumnForm}>
