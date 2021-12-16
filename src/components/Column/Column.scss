@@ -8,7 +8,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 	width: 300px;
 	height: $column-height;
 	margin-left: $gap;
-	background-color: #ebecf0;
+	background-color: $column-background-color;
 	border-radius: $scollbar-border-radius;
 	> * {
 		color: #333;
@@ -34,10 +34,10 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 		border-bottom-left-radius: $column-border-radius;
 		border-bottom-right-radius: $column-border-radius;
 		color: #888;
-		.footer-container{
+		.footer-container {
 			margin-left: 10px;
 			cursor: pointer;
-			&:hover{
+			&:hover {
 				color: #333;
 			}
 		}
