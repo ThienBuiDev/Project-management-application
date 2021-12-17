@@ -5,7 +5,7 @@ import { Dropdown, DropdownItem, DropdownButton } from 'react-bootstrap'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
 import { Form } from 'react-bootstrap'
-function Column({ column, onCardDrop }) {
+function Column({ column, onCardDrop, onUpdateColumn }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
 	)
@@ -18,12 +18,21 @@ function Column({ column, onCardDrop }) {
 		setColumnTitle(e.target.value)
 	}
 	const handleColumnTitleBlur = (e) => {
-		console.log(columnTitle)
+		//remove column
+		onUpdateColumn({
+			...column,
+			title: columnTitle,
+		})
+
+		toggleConfirmModal()
 	}
 	const onConfirmModalAction = (type) => {
-		if (type === 'close') {
+		if (type === 'remove') {
 			//remove column
-			toggleConfirmModal()
+			onUpdateColumn({
+				...column,
+				_delete: true,
+			})
 		}
 		toggleConfirmModal()
 	}
@@ -50,6 +59,7 @@ function Column({ column, onCardDrop }) {
 						onChange={handleColumnTitleChange}
 						onBlur={handleColumnTitleBlur}
 						onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+						onMouseDown={(e) => e.preventDefault()}
 					/>
 				</div>
 				<div className='column-dropdown-actions'>
@@ -107,7 +117,7 @@ function Column({ column, onCardDrop }) {
 			</footer>
 			<ConfirmModal
 				show={showConfirmModal}
-				onAction={onConfirmModalAction}
+				onAction={() => onConfirmModalAction('remove')}
 				title='Remove Column'
 				content={`Are you sure you want to remove <strong>${column.title}</strong> column? <br />This action is not reversible`}
 			/>
