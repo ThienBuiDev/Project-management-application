@@ -42,8 +42,20 @@ body {
 		box-shadow: none;
 	}
 
-	.btn:focus {
+	.btn:focus,
+	.btn:active {
 		outline: none;
-		box-shadow: none;
+		box-shadow: none !important;
+		border: none;
+	}
+
+	.content-editable {
+		background-color: inherit;
+		outline: none;
+		border: none;
+		&:focus {
+			background-color: #fff;
+			border: 1px solid #0079bf;
+		}
 	}
 }

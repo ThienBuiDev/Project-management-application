@@ -1,16 +1,82 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
-
+import { Dropdown, DropdownItem, DropdownButton } from 'react-bootstrap'
 import Card from 'components/Card/Card'
-function Column({ column, onCardDrop }) {
+import ConfirmModal from 'components/Common/ConfirmModal'
+import { Form } from 'react-bootstrap'
+function Column({ column, onCardDrop, onUpdateColumn }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
 	)
 
+	const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+	const toggleConfirmModal = () => setShowConfirmModal(!showConfirmModal)
+	const [columnTitle, setColumnTitle] = useState(column.title)
+	const handleColumnTitleChange = (e) => {
+		setColumnTitle(e.target.value)
+	}
+	const handleColumnTitleBlur = (e) => {
+		//remove column
+		onUpdateColumn({
+			...column,
+			title: columnTitle,
+		})
+
+		toggleConfirmModal()
+	}
+	const onConfirmModalAction = (type) => {
+		if (type === 'remove') {
+			//remove column
+			onUpdateColumn({
+				...column,
+				_delete: true,
+			})
+		}
+		toggleConfirmModal()
+	}
+
+	const selectAllText = (e) => {
+		e.target.select()
+	}
+
+	useEffect(() => {
+		setColumnTitle(column.title)
+	}, [column.title])
+
 	return (
 		<div className='column'>
-			<header className='column-drag-handle'>{column.title}</header>
+			<header className='column-drag-handle'>
+				<div className='column-title'>
+					<Form.Control
+						size='sm'
+						type='text'
+						placeholder='Enter column title'
+						className='content-editable'
+						value={columnTitle}
+						onClick={selectAllText}
+						onChange={handleColumnTitleChange}
+						onBlur={handleColumnTitleBlur}
+						onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+						onMouseDown={(e) => e.preventDefault()}
+					/>
+				</div>
+				<div className='column-dropdown-actions'>
+					<Dropdown>
+						<Dropdown.Toggle id='dropdown-basic' className='dropdown-btn' />
+
+						<Dropdown.Menu>
+							<Dropdown.Item>Add card...</Dropdown.Item>
+							<Dropdown.Item onClick={toggleConfirmModal}>
+								Remove column...
+							</Dropdown.Item>
+							<Dropdown.Item>Copy list (in development)</Dropdown.Item>
+							<Dropdown.Item>Archive cards (in development)</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+				</div>
+			</header>
 
 			<div className='card-list'>
 				<Container
@@ -49,6 +115,12 @@ function Column({ column, onCardDrop }) {
 					Add another card
 				</div>
 			</footer>
+			<ConfirmModal
+				show={showConfirmModal}
+				onAction={() => onConfirmModalAction('remove')}
+				title='Remove Column'
+				content={`Are you sure you want to remove <strong>${column.title}</strong> column? <br />This action is not reversible`}
+			/>
 		</div>
 	)
 }
