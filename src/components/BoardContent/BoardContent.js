@@ -65,8 +65,6 @@ function BoardContent() {
 		setColumns(newColumns)
 	}
 
-	
-
 	const addNewColumSubmit = () => {
 		if (newColumnTitle.trim() == '') {
 			alert('Please enter column title')
@@ -99,7 +97,7 @@ function BoardContent() {
 	const onUpdateColumn = (newColumnToUpdate) => {
 		const columnIdToUpdate = newColumnToUpdate.id
 		const newColumns = [...columns]
-		const columnIndex = newColumns.find((c) => c.id === columnIdToUpdate)
+		let columnIndex = newColumns.findIndex((c) => c.id === columnIdToUpdate)
 		if (newColumnToUpdate._delete) {
 			//remove column from
 			newColumns.splice(columnIndex, 1)

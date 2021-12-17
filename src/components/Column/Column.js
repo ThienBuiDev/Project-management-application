@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { Dropdown, Form, Button } from 'react-bootstrap'
@@ -22,8 +22,6 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 			...column,
 			title: columnTitle,
 		})
-
-		toggleConfirmModal()
 	}
 	const onConfirmModalAction = (type) => {
 		if (type === 'remove') {
@@ -47,10 +45,40 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 	const [showNewCardForm, setShowNewCardForm] = useState(false)
 	const toggleNewCardForm = () => {
 		setShowNewCardForm(!showNewCardForm)
-		setNewColumnTitle('')
+		setNewCardTitle('')
+	}
+	const newCardTitleRef = useRef(null)
+	useEffect(() => {
+		newCardTitleRef && newCardTitleRef.current && newCardTitleRef.current.focus()
+	}, [showNewCardForm])
+	const [newCardTitle, setNewCardTitle] = useState('')
+
+	const onNewCardTitleChange = (e) => {
+		setNewCardTitle(e.target.value)
+	}
+	const addNewCardSubmit = () => {
+		if (newCardTitle.trim() == '') {
+			alert('Please enter card title')
+			newCardTitleRef && newCardTitleRef.current && newCardTitleRef.current.focus()
+			setNewCardTitle('')
+			return
+		} else {
+			const newCard = {
+				id: `card-${Date.now()}`,
+				title: newCardTitle,
+				columnId: column.id,
+				boardId: column.boardId,
+				cover: null,
+			}
+			onUpdateColumn({
+				...column,
+				cards: [...column.cards, newCard],
+				cardOrder: [...column.cardOrder, newCard.id],
+			})
+			toggleNewCardForm()
+		}
 	}
 
-	const [newColumnTitle, setNewColumnTitle] = useState('')
 	return (
 		<div className='column'>
 			<header className='column-drag-handle'>
@@ -120,16 +148,16 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 					<Form.Control
 						size='sm'
 						type='text'
-						placeholder='Enter column title'
+						placeholder='Enter title for new card'
 						className='enter-new-card-textarea'
 						as='textarea'
 						rows='2'
-						// value={newColumnTitle}
-						// ref={newColumnTitleRef}
-						// onChange={onNewColumnTitleChange}
-						// onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()}
+						ref={newCardTitleRef}
+						value={newCardTitle}
+						onChange={onNewCardTitleChange}
+						onKeyDown={(e) => e.key === 'Enter' && addNewCardSubmit()}
 					/>
-					<Button variant='success' size='sm'>
+					<Button variant='success' size='sm' onClick={addNewCardSubmit}>
 						Add column
 					</Button>
 					<span className='cancel-icon' onClick={toggleNewCardForm}>
