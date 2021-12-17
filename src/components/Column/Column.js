@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { Dropdown, DropdownItem, DropdownButton } from 'react-bootstrap'
+import { Dropdown, Form, Button } from 'react-bootstrap'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
-import { Form } from 'react-bootstrap'
 function Column({ column, onCardDrop, onUpdateColumn }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
@@ -45,6 +44,13 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 		setColumnTitle(column.title)
 	}, [column.title])
 
+	const [showNewCardForm, setShowNewCardForm] = useState(false)
+	const toggleNewCardForm = () => {
+		setShowNewCardForm(!showNewCardForm)
+		setNewColumnTitle('')
+	}
+
+	const [newColumnTitle, setNewColumnTitle] = useState('')
 	return (
 		<div className='column'>
 			<header className='column-drag-handle'>
@@ -109,12 +115,37 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 					))}
 				</Container>
 			</div>
-			<footer>
-				<div className='footer-container'>
-					<i className='fa fa-plus icon' />
-					Add another card
+			{showNewCardForm && (
+				<div className='add-new-card-container'>
+					<Form.Control
+						size='sm'
+						type='text'
+						placeholder='Enter column title'
+						className='enter-new-card-textarea'
+						as='textarea'
+						rows='2'
+						// value={newColumnTitle}
+						// ref={newColumnTitleRef}
+						// onChange={onNewColumnTitleChange}
+						// onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()}
+					/>
+					<Button variant='success' size='sm'>
+						Add column
+					</Button>
+					<span className='cancel-icon' onClick={toggleNewCardForm}>
+						<i className='fa fa-times'></i>
+					</span>
 				</div>
-			</footer>
+			)}
+			{!showNewCardForm && (
+				<footer>
+					<div className='footer-container' onClick={toggleNewCardForm}>
+						<i className='fa fa-plus icon' />
+						Add another card
+					</div>
+				</footer>
+			)}
+
 			<ConfirmModal
 				show={showConfirmModal}
 				onAction={() => onConfirmModalAction('remove')}

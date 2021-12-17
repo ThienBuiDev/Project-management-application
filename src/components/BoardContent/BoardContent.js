@@ -11,6 +11,11 @@ function BoardContent() {
 	const [board, setBoard] = useState({})
 	const [columns, setColumns] = useState([])
 	const [showNewColumnForm, setShowNewColumnForm] = useState(false)
+	const toggleNewColumnForm = () => {
+		setShowNewColumnForm(!showNewColumnForm)
+		setNewColumnTitle('')
+	}
+
 	const [newColumnTitle, setNewColumnTitle] = useState('')
 
 	const newColumnTitleRef = useRef(null)
@@ -60,10 +65,7 @@ function BoardContent() {
 		setColumns(newColumns)
 	}
 
-	const toggleNewColumnForm = () => {
-		setShowNewColumnForm(!showNewColumnForm)
-		setNewColumnTitle('')
-	}
+	
 
 	const addNewColumSubmit = () => {
 		if (newColumnTitle.trim() == '') {
@@ -160,7 +162,7 @@ function BoardContent() {
 							<Button variant='success' size='sm' onClick={addNewColumSubmit}>
 								Add column
 							</Button>
-							<span className='cancel-new-column' onClick={toggleNewColumnForm}>
+							<span className='cancel-icon' onClick={toggleNewColumnForm}>
 								<i className='fa fa-times'></i>
 							</span>
 						</Col>

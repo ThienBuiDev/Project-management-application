@@ -5,8 +5,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 
 .column {
 	// flex: 0 0 auto;
-	width: 300px;
-	height: $column-height;
+	padding-bottom: 8px;
 	margin-left: $gap;
 	background-color: $column-background-color;
 	border-radius: $scollbar-border-radius;
@@ -17,6 +16,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 
 	header.column-drag-handle {
 		padding-left: 15px;
+
 		display: flex;
 		align-items: center;
 		height: $column-header-height;
@@ -91,16 +91,20 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 		padding-right: 4px;
 		margin-left: 4px;
 		margin-right: 4px;
-		max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - #{$gap});
+		width: 300px;
+		max-height: calc(#{$column-height} - 15 * #{$gap});
 		overflow-y: auto;
 
 		&::-webkit-scrollbar {
 			-webkit-appearance: none;
 			border-radius: $scollbar-border-radius;
 			background-color: #ddd;
+			margin-right: 100px;
+			position: relative;
+			right: 100px;
 		}
 		&::-webkit-scrollbar:vertical {
-			width: 6px;
+			width: 8px;
 		}
 		&::-webkit-scrollbar-thumb {
 			background-color: #ccc;
@@ -122,6 +126,15 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 			background-color: rgba(150, 150, 200, 0.1);
 			border: 1px dashed #abc;
 			margin: 5px;
+		}
+	}
+
+	.add-new-card-container {
+		padding: 4px 16px 4px 12px;
+		.enter-new-card-textarea {
+			min-height: 50px;
+			max-height: 160px;
+			margin-bottom: 4px;
 		}
 	}
 }
