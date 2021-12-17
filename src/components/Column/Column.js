@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { Dropdown, DropdownItem, DropdownButton } from 'react-bootstrap'
+import { Dropdown, Form, Button } from 'react-bootstrap'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
-import { Form } from 'react-bootstrap'
 function Column({ column, onCardDrop, onUpdateColumn }) {
 	const cards = column.cards.sort(
 		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
@@ -23,8 +22,6 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 			...column,
 			title: columnTitle,
 		})
-
-		toggleConfirmModal()
 	}
 	const onConfirmModalAction = (type) => {
 		if (type === 'remove') {
@@ -44,6 +41,43 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 	useEffect(() => {
 		setColumnTitle(column.title)
 	}, [column.title])
+
+	const [showNewCardForm, setShowNewCardForm] = useState(false)
+	const toggleNewCardForm = () => {
+		setShowNewCardForm(!showNewCardForm)
+		setNewCardTitle('')
+	}
+	const newCardTitleRef = useRef(null)
+	useEffect(() => {
+		newCardTitleRef && newCardTitleRef.current && newCardTitleRef.current.focus()
+	}, [showNewCardForm])
+	const [newCardTitle, setNewCardTitle] = useState('')
+
+	const onNewCardTitleChange = (e) => {
+		setNewCardTitle(e.target.value)
+	}
+	const addNewCardSubmit = () => {
+		if (newCardTitle.trim() == '') {
+			alert('Please enter card title')
+			newCardTitleRef && newCardTitleRef.current && newCardTitleRef.current.focus()
+			setNewCardTitle('')
+			return
+		} else {
+			const newCard = {
+				id: `card-${Date.now()}`,
+				title: newCardTitle,
+				columnId: column.id,
+				boardId: column.boardId,
+				cover: null,
+			}
+			onUpdateColumn({
+				...column,
+				cards: [...column.cards, newCard],
+				cardOrder: [...column.cardOrder, newCard.id],
+			})
+			toggleNewCardForm()
+		}
+	}
 
 	return (
 		<div className='column'>
@@ -109,12 +143,37 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 					))}
 				</Container>
 			</div>
-			<footer>
-				<div className='footer-container'>
-					<i className='fa fa-plus icon' />
-					Add another card
+			{showNewCardForm && (
+				<div className='add-new-card-container'>
+					<Form.Control
+						size='sm'
+						type='text'
+						placeholder='Enter title for new card'
+						className='enter-new-card-textarea'
+						as='textarea'
+						rows='2'
+						ref={newCardTitleRef}
+						value={newCardTitle}
+						onChange={onNewCardTitleChange}
+						onKeyDown={(e) => e.key === 'Enter' && addNewCardSubmit()}
+					/>
+					<Button variant='success' size='sm' onClick={addNewCardSubmit}>
+						Add column
+					</Button>
+					<span className='cancel-icon' onClick={toggleNewCardForm}>
+						<i className='fa fa-times'></i>
+					</span>
 				</div>
-			</footer>
+			)}
+			{!showNewCardForm && (
+				<footer>
+					<div className='footer-container' onClick={toggleNewCardForm}>
+						<i className='fa fa-plus icon' />
+						Add another card
+					</div>
+				</footer>
+			)}
+
 			<ConfirmModal
 				show={showConfirmModal}
 				onAction={() => onConfirmModalAction('remove')}

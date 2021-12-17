@@ -48,22 +48,8 @@ $list-bg-color: #ebf0ee;
 		padding: 4px 10px;
 		margin-left: $gap;
 		border-radius: $column-border-radius;
-
 		input.enter-new-column-input {
 			margin: 5px 0;
-		}
-
-		span.cancel-new-column {
-			display: inline-block;
-			float: right;
-			font-size: 18px;
-			color: $alert-color;
-			max-width: 100%;
-			text-align: center;
-			cursor: pointer;
-			&:hover {
-				color: darken($color: $alert-color, $amount: 10);
-			}
 		}
 	}
 }

@@ -40,6 +40,7 @@ body {
 	[type='tel'].form-control:focus,
 	[contenteditable].form-control:focus {
 		box-shadow: none;
+		border: 1px solid #0079bf;
 	}
 
 	.btn:focus,
@@ -55,7 +56,19 @@ body {
 		border: none;
 		&:focus {
 			background-color: #fff;
-			border: 1px solid #0079bf;
+		}
+	}
+
+	span.cancel-icon {
+		display: inline-block;
+		float: right;
+		font-size: 18px;
+		color: $alert-color;
+		max-width: 100%;
+		text-align: center;
+		cursor: pointer;
+		&:hover {
+			color: darken($color: $alert-color, $amount: 10);
 		}
 	}
 }
