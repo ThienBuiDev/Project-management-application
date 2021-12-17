@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Column.scss'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { Dropdown, DropdownItem, DropdownButton } from 'react-bootstrap'
@@ -13,7 +13,13 @@ function Column({ column, onCardDrop }) {
 	const [showConfirmModal, setShowConfirmModal] = useState(false)
 
 	const toggleConfirmModal = () => setShowConfirmModal(!showConfirmModal)
-
+	const [columnTitle, setColumnTitle] = useState(column.title)
+	const handleColumnTitleChange = (e) => {
+		setColumnTitle(e.target.value)
+	}
+	const handleColumnTitleBlur = (e) => {
+		console.log(columnTitle)
+	}
 	const onConfirmModalAction = (type) => {
 		if (type === 'close') {
 			//remove column
@@ -21,6 +27,15 @@ function Column({ column, onCardDrop }) {
 		}
 		toggleConfirmModal()
 	}
+
+	const selectAllText = (e) => {
+		e.target.select()
+	}
+
+	useEffect(() => {
+		setColumnTitle(column.title)
+	}, [column.title])
+
 	return (
 		<div className='column'>
 			<header className='column-drag-handle'>
@@ -29,10 +44,12 @@ function Column({ column, onCardDrop }) {
 						size='sm'
 						type='text'
 						placeholder='Enter column title'
-						className='column-content-editable'
-						value={column.title}
-						// onChange={handleColumnTitleChange}
-						// onEnter={addNewColumSubmit}
+						className='content-editable'
+						value={columnTitle}
+						onClick={selectAllText}
+						onChange={handleColumnTitleChange}
+						onBlur={handleColumnTitleBlur}
+						onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
 					/>
 				</div>
 				<div className='column-dropdown-actions'>

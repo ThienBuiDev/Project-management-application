@@ -132,7 +132,7 @@ function BoardContent() {
 								value={newColumnTitle}
 								ref={newColumnTitleRef}
 								onChange={onNewColumnTitleChange}
-								onEnter={addNewColumSubmit}
+								onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()}
 							/>
 							<Button variant='success' size='sm' onClick={addNewColumSubmit}>
 								Add column
