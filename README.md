@@ -1,5 +1,5 @@
 
-# ReactJS + Node + Redux - A management app inspired by Trello
+# ReactJS + Node + Redux - A project management app inspired by Trello
 
 ## Requirements
 
