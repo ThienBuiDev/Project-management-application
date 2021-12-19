@@ -1,11 +1,15 @@
 @import '_setting.scss';
-
-
-
+@import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
 .navbar-board {
-    padding-left: 10px;
-    display: flex;
-    align-items: center;
-    background-color: $board-bg-color;
-    font-size: 1.1rem;
+	font-family: 'Twinkle Star', cursive;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	color: white;
+	padding-left: 10px;
+	display: flex;
+	align-items: center;
+	// background-color: $board-bg-color;
+	background-color: rgba(0, 0, 0, 0.2);
+	font-size: 1.1rem;
 }

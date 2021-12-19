@@ -16,7 +16,7 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 	const handleColumnTitleChange = (e) => {
 		setColumnTitle(e.target.value)
 	}
-	const handleColumnTitleBlur = (e) => {
+	const handleColumnTitleBlur = () => {
 		//remove column
 		onUpdateColumn({
 			...column,

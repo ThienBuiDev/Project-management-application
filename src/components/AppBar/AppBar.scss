@@ -1,12 +1,25 @@
 @import '_setting.scss';
 
-
-$appbar-bg-color: #0067a3;
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+$appbar-bg-color: rgba(0, 0, 0, 0.4);
 .navbar-app {
+	position: relative;
+
+	font-family: 'Open Sans', sans-serif;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: white;
 	background-color: $appbar-bg-color;
 	font-size: 1.5rem;
 	padding-left: $gap;
 	display: flex;
 	align-items: center;
+
+	img {
+		max-height: calc(#{$navbar-app-height} - 5px);
+		border-radius: 100%;
+		position: absolute;
+		right: 4px;
+	}
 }

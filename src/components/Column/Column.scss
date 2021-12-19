@@ -113,7 +113,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 
 		.card-ghost {
 			transition: transform 0.18s ease;
-			transform: rotateZ(5deg);
+			transform: rotateZ(0deg);
 			font-weight: bold;
 		}
 
@@ -135,6 +135,11 @@ $column-height: calc(#{$board-content-height} - #{$gap * 3});
 			min-height: 50px;
 			max-height: 160px;
 			margin-bottom: 4px;
+		}
+		.cancel-icon {
+			display: inline-block;
+			height: 32px;
+			line-height: 32px;
 		}
 	}
 }
