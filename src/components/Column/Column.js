@@ -5,9 +5,7 @@ import { Dropdown, Form, Button } from 'react-bootstrap'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
 function Column({ column, onCardDrop, onUpdateColumn }) {
-	const cards = column.cards.sort(
-		(a, b) => column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id)
-	)
+	const cards = column.cards.sort((a, b) => column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id))
 
 	const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -66,14 +64,14 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 			const newCard = {
 				id: `card-${Date.now()}`,
 				title: newCardTitle,
-				columnId: column.id,
+				columnId: column._id,
 				boardId: column.boardId,
 				cover: null,
 			}
 			onUpdateColumn({
 				...column,
 				cards: [...column.cards, newCard],
-				cardOrder: [...column.cardOrder, newCard.id],
+				cardOrder: [...column.cardOrder, newCard._id],
 			})
 			toggleNewCardForm()
 		}
@@ -102,9 +100,7 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 
 						<Dropdown.Menu>
 							<Dropdown.Item>Add card...</Dropdown.Item>
-							<Dropdown.Item onClick={toggleConfirmModal}>
-								Remove column...
-							</Dropdown.Item>
+							<Dropdown.Item onClick={toggleConfirmModal}>Remove column...</Dropdown.Item>
 							<Dropdown.Item>Copy list (in development)</Dropdown.Item>
 							<Dropdown.Item>Archive cards (in development)</Dropdown.Item>
 						</Dropdown.Menu>
@@ -118,15 +114,15 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 					groupName='thienbui-column'
 					// onDragStart={(e) => console.log('drag started', e)}
 					// onDragEnd={(e) => console.log('drag end', e)}
-					onDrop={(dropResult) => onCardDrop(column.id, dropResult)}
+					onDrop={(dropResult) => onCardDrop(column._id, dropResult)}
 					getChildPayload={(index) => cards[index]}
 					dragClass='card-ghost'
 					dropClass='card-ghost-drop'
 					// onDragEnter={() => {
-					// 	console.log('drag enter:', column.id)
+					// 	console.log('drag enter:', column._id)
 					// }}
 					// onDragLeave={() => {
-					// 	console.log('drag leave:', column.id)
+					// 	console.log('drag leave:', column._id)
 					// }}
 					// onDropReady={(p) => console.log('Drop ready: ', p)}
 
@@ -145,18 +141,7 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 			</div>
 			{showNewCardForm && (
 				<div className='add-new-card-container'>
-					<Form.Control
-						size='sm'
-						type='text'
-						placeholder='Enter title for new card'
-						className='enter-new-card-textarea'
-						as='textarea'
-						rows='2'
-						ref={newCardTitleRef}
-						value={newCardTitle}
-						onChange={onNewCardTitleChange}
-						onKeyDown={(e) => e.key === 'Enter' && addNewCardSubmit()}
-					/>
+					<Form.Control size='sm' type='text' placeholder='Enter title for new card' className='enter-new-card-textarea' as='textarea' rows='2' ref={newCardTitleRef} value={newCardTitle} onChange={onNewCardTitleChange} onKeyDown={(e) => e.key === 'Enter' && addNewCardSubmit()} />
 					<Button variant='success' size='sm' onClick={addNewCardSubmit}>
 						Add column
 					</Button>
@@ -174,12 +159,7 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 				</footer>
 			)}
 
-			<ConfirmModal
-				show={showConfirmModal}
-				onAction={() => onConfirmModalAction('remove')}
-				title='Remove Column'
-				content={`Are you sure you want to remove <strong>${column.title}</strong> column? <br />This action is not reversible`}
-			/>
+			<ConfirmModal show={showConfirmModal} onAction={() => onConfirmModalAction('remove')} title='Remove Column' content={`Are you sure you want to remove <strong>${column.title}</strong> column? <br />This action is not reversible`} />
 		</div>
 	)
 }
