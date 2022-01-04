@@ -7,6 +7,7 @@ import './BoardContent.scss'
 import Column from 'components/Column/Column'
 
 import { initialData } from 'actions/initialData'
+import { fetchBoardDetails } from 'actions/APIs'
 function BoardContent() {
 	const [board, setBoard] = useState({})
 	const [columns, setColumns] = useState([])
@@ -20,14 +21,13 @@ function BoardContent() {
 
 	const newColumnTitleRef = useRef(null)
 	useEffect(() => {
-		const boardFromDB = initialData.boards.find((board) => board.id === 'board-1')
-		boardFromDB.columns.sort(
-			(a, b) => boardFromDB.columnOrder.indexOf(a.id) - boardFromDB.columnOrder.indexOf(b.id)
-		)
-		if (boardFromDB) {
-			setBoard(boardFromDB)
-			setColumns(boardFromDB.columns)
-		}
+		const boardId = '61d1d1b4c557dc1a8fee295c'
+		fetchBoardDetails(boardId).then((board) => {
+			board.columns.sort((a, b) => board.columnOrder.indexOf(a.id) - board.columnOrder.indexOf(b.id))
+			console.log(board)
+			setBoard(board)
+			setColumns(board.columns)
+		})
 	}, [])
 	useEffect(() => {
 		newColumnTitleRef && newColumnTitleRef.current && newColumnTitleRef.current.focus()
@@ -55,7 +55,6 @@ function BoardContent() {
 
 	const onCardDrop = (columnId, dropResult) => {
 		console.log(columns)
-
 		if ((dropResult.removedIndex == null) & (dropResult.addedIndex == null)) return
 		console.log(dropResult)
 		let newColumns = [...columns]
@@ -74,7 +73,7 @@ function BoardContent() {
 		} else {
 			const newColumn = {
 				id: `column-${Date.now()}`,
-				title: newColumnTitle,
+				title: newColumnTitle.trim(),
 				cards: [],
 				cardOrder: [],
 			}
@@ -127,11 +126,7 @@ function BoardContent() {
 				}}>
 				{columns.map((column, index) => (
 					<Draggable key={index}>
-						<Column
-							column={column}
-							onCardDrop={onCardDrop}
-							onUpdateColumn={onUpdateColumn}
-						/>
+						<Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn} />
 					</Draggable>
 				))}
 			</Container>
@@ -147,16 +142,7 @@ function BoardContent() {
 				) : (
 					<Row>
 						<Col className='enter-new-column'>
-							<Form.Control
-								size='sm'
-								type='text'
-								placeholder='Enter column title'
-								className='enter-new-column-input'
-								value={newColumnTitle}
-								ref={newColumnTitleRef}
-								onChange={onNewColumnTitleChange}
-								onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()}
-							/>
+							<Form.Control size='sm' type='text' placeholder='Enter column title' className='enter-new-column-input' value={newColumnTitle} ref={newColumnTitleRef} onChange={onNewColumnTitleChange} onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()} />
 							<Button variant='success' size='sm' onClick={addNewColumSubmit}>
 								Add column
 							</Button>
