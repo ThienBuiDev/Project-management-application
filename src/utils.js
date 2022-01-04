@@ -16,4 +16,4 @@ export const applyDrag = (arr, dragResult) => {
 	return result
 }
 
-
+export const API_ROOT = 'http://localhost:8080'
