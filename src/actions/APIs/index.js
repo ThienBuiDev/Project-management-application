@@ -11,6 +11,7 @@ export const createNewColumn = async (data) => {
 	return request.data
 }
 
+// Update or remove columns
 export const updateColumn = async (id, data) => {
 	const request = await axios.put(`${API_ROOT}/v1/columns/${id}`, data)
 	return request.data
