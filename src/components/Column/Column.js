@@ -7,7 +7,7 @@ import ConfirmModal from 'components/Common/ConfirmModal'
 import { createNewCard, updateColumn } from 'actions/APIs'
 
 function Column({ column, onCardDrop, onUpdateColumn }) {
-	const cards = column.cards.sort((a, b) => column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id))
+	const cards = column.cards ? column.cards.sort((a, b) => column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id)) : []
 	const [showConfirmModal, setShowConfirmModal] = useState(false)
 
 	const toggleConfirmModal = () => setShowConfirmModal(!showConfirmModal)
@@ -24,20 +24,23 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 				title: columnTitle,
 			}
 			updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
-
 				updatedColumn.cards = newColumn.cards
 				onUpdateColumn(updatedColumn)
 			})
 		}
 	}
 
-	// Remove title
+	// Remove column
 	const onConfirmModalAction = (type) => {
 		if (type === 'remove') {
 			//remove column
-			onUpdateColumn({
+			const newColumn = {
 				...column,
-				_delete: true,
+				_destroy: true,
+			}
+
+			updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
+				onUpdateColumn(updatedColumn)
 			})
 		}
 		toggleConfirmModal()
@@ -154,7 +157,7 @@ function Column({ column, onCardDrop, onUpdateColumn }) {
 				<div className='add-new-card-container'>
 					<Form.Control size='sm' type='text' placeholder='Enter title for new card' className='enter-new-card-textarea' as='textarea' rows='2' ref={newCardTitleRef} value={newCardTitle} onChange={onNewCardTitleChange} onKeyDown={(e) => e.key === 'Enter' && addNewCardSubmit()} />
 					<Button variant='success' size='sm' onClick={addNewCardSubmit}>
-						Add column
+						Add card
 					</Button>
 					<span className='cancel-icon' onClick={toggleNewCardForm}>
 						<i className='fa fa-times'></i>

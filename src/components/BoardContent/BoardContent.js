@@ -24,7 +24,6 @@ function BoardContent() {
 		const boardId = '61d1d1b4c557dc1a8fee295c'
 		fetchBoardDetails(boardId).then((board) => {
 			board.columns.sort((a, b) => board.columnOrder.indexOf(a._id) - board.columnOrder.indexOf(b._id))
-			console.log(board)
 			setBoard(board)
 			setColumns(board.columns)
 		})
@@ -100,7 +99,7 @@ function BoardContent() {
 		const columnIdToUpdate = newColumnToUpdate._id
 		const newColumns = [...columns]
 		let columnIndex = newColumns.findIndex((c) => c._id === columnIdToUpdate)
-		if (newColumnToUpdate._delete) {
+		if (newColumnToUpdate._destroy) {
 			newColumns.splice(columnIndex, 1)
 		} else {
 			newColumns[columnIndex] = newColumnToUpdate
@@ -111,7 +110,6 @@ function BoardContent() {
 			columns: newColumns,
 			columnOrder: newColumns.map((column) => column._id),
 		})
-		console.log('thien2')
 	}
 	return (
 		<div className='board-content'>
