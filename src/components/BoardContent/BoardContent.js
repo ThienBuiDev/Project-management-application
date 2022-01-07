@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap'
-import { isEmpty } from 'lodash'
+import { isEmpty, cloneDeep } from 'lodash'
 import { applyDrag } from 'utils'
 import { initialData } from 'actions/initialData'
-import { fetchBoardDetails, createNewColumn } from 'actions/APIs'
+import {
+	fetchBoardDetails,
+	createNewColumn,
+	updateBoard,
+	updateColumn,
+	updateCard,
+} from 'actions/APIs'
 import './BoardContent.scss'
 import Column from 'components/Column/Column'
 
@@ -23,7 +29,9 @@ function BoardContent() {
 	useEffect(() => {
 		const boardId = '61d1d1b4c557dc1a8fee295c'
 		fetchBoardDetails(boardId).then((board) => {
-			board.columns.sort((a, b) => board.columnOrder.indexOf(a._id) - board.columnOrder.indexOf(b._id))
+			board.columns.sort(
+				(a, b) => board.columnOrder.indexOf(a._id) - board.columnOrder.indexOf(b._id)
+			)
 			setBoard(board)
 			setColumns(board.columns)
 		})
@@ -41,26 +49,39 @@ function BoardContent() {
 	}
 
 	const onColumnDrop = (dropResult) => {
-		let newColumns = [...columns]
+		let newColumns = cloneDeep(columns)
 		newColumns = applyDrag(newColumns, dropResult)
-		console.log(newColumns)
+		let newBoard = cloneDeep(board)
+		newBoard.columnOrder = newColumns.map((c) => c._id)
+		newBoard.columns = newColumns
+		// Api call to update columnOrder in board
 		setColumns(newColumns)
-		setBoard({
-			...board,
-			columns: newColumns,
-			columnOrder: newColumns.map((column) => column._id),
+		setBoard(newBoard)
+		updateBoard(newBoard._id, newBoard).catch((err) => {
+			console.log(err)
+			setColumns(columns)
+			setBoard(board)
 		})
 	}
 
 	const onCardDrop = (columnId, dropResult) => {
-		console.log(columns)
-		if ((dropResult.removedIndex == null) & (dropResult.addedIndex == null)) return
-		console.log(dropResult)
-		let newColumns = [...columns]
-		let currentColumn = newColumns.find((column) => column._id === columnId)
-		currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
-		currentColumn.cardOrder = currentColumn.cards.map((card) => card._id)
-		setColumns(newColumns)
+		if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+			let newColumns = cloneDeep(columns)
+			let currentColumn = newColumns.find((column) => column._id === columnId)
+			currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
+			currentColumn.cardOrder = currentColumn.cards.map((card) => card._id)
+			setColumns(newColumns)
+			if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
+				updateColumn(currentColumn._id, currentColumn).catch((err) => setColumns(columns))
+			} else {
+				if (dropResult.addedIndex !== null) {
+					let currentCard = cloneDeep(dropResult.payload)
+					currentCard.columnId = currentColumn._id
+
+					updateCard(currentCard._id, currentCard)
+				}
+			}
+		}
 	}
 
 	const addNewColumSubmit = () => {
@@ -126,7 +147,11 @@ function BoardContent() {
 				}}>
 				{columns.map((column, index) => (
 					<Draggable key={index}>
-						<Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn} />
+						<Column
+							column={column}
+							onCardDrop={onCardDrop}
+							onUpdateColumn={onUpdateColumn}
+						/>
 					</Draggable>
 				))}
 			</Container>
@@ -142,7 +167,16 @@ function BoardContent() {
 				) : (
 					<Row>
 						<Col className='enter-new-column'>
-							<Form.Control size='sm' type='text' placeholder='Enter column title' className='enter-new-column-input' value={newColumnTitle} ref={newColumnTitleRef} onChange={onNewColumnTitleChange} onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()} />
+							<Form.Control
+								size='sm'
+								type='text'
+								placeholder='Enter column title'
+								className='enter-new-column-input'
+								value={newColumnTitle}
+								ref={newColumnTitleRef}
+								onChange={onNewColumnTitleChange}
+								onKeyDown={(e) => e.key === 'Enter' && addNewColumSubmit()}
+							/>
 							<Button variant='success' size='sm' onClick={addNewColumSubmit}>
 								Add column
 							</Button>
